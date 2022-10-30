@@ -1,11 +1,6 @@
-#include <cstddef>
 #include <iostream>
-#include <cmath>
-#include <istream>
 #include <string>
-#include<vector>
 #include "calculator.h"
-#include "pluginManager.h"
 
 
 int main(int argc, char** argv)

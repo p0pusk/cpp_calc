@@ -1,7 +1,4 @@
 
 add_library(sin MODULE sin.cpp)
-
-install(TARGETS sin
-    ARCHIVE DESTINATION .
-    LIBRARY DESTINATION .
-    RUNTIME DESTINATION .)
+add_library(log MODULE log.cpp)
+add_library(exp MODULE exp.cpp)

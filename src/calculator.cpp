@@ -1,31 +1,26 @@
 #include "calculator.h"
 
+
 Calculator::Calculator()
 {
-	operations.emplace("+", Operation("+", 1, Associativity::Left, [](double x, double y)
-								 { return x + y; }));
-	operations.emplace("-", Operation("-", 1, Associativity::Left, [](double x, double y)
-								 { return x - y; }));
-	operations.emplace("*", Operation("*", 2, Associativity::Left, [](double x, double y)
-								 { return x * y; }));
-	operations.emplace("/", Operation("/", 2, Associativity::Left, [](double x, double y)
-								 { return x / y; }));
-	operations.emplace("^", Operation("^", 3, Associativity::Right, [](double x, double y)
-								 { return pow(x, y); }));
+	operations.emplace("+", Operation("+", 1, [](double x, double y) { return x + y; }));
+	operations.emplace("-", Operation("-", 1, [](double x, double y) { return x - y; }));
+	operations.emplace("*", Operation("*", 2, [](double x, double y) { return x * y; }));
+	operations.emplace("/", Operation("/", 2, [](double x, double y) { return x / y; }));
+	operations.emplace("^", Operation("^", 3, [](double x, double y) { return pow(x, y); }));
 
     pm = pm->Instance();
+}
+
+Calculator::~Calculator()
+{
+    pm->CloseLibs();
 }
 
 double Calculator::Calculate(std::string input)
 {
     Parser p(operations);
     std::vector<Token> expr = p.infixToPostfix(input);
-
-    for (auto t : expr)
-    {
-        std::cout << t.name << ' ';
-    }
-    std::cout << std::endl;
     double result = EvalPostfix(expr);
     return result;
 }
@@ -80,6 +75,11 @@ double Calculator::EvalPostfix(std::vector<Token> expr)
                 throw std::runtime_error("Unknown function name");
             }
         }
+    }
+
+    if (operands.size() != 1)
+    {
+        throw std::runtime_error("Invalid input expression");
     }
 
     return operands.top();

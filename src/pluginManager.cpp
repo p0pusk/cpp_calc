@@ -1,16 +1,5 @@
-#include <functional>
-#include <exception>
 #include "pluginManager.h"
 
-
-// PluginManager::~PluginManager()
-// {
-//     while (!handlers.empty())
-//     {
-//         dlclose(handlers.top());
-//         handlers.pop();
-//     }
-// }
 
 void* PluginManager::OpenLib(std::string const& func_name)
 {
@@ -23,6 +12,18 @@ void* PluginManager::OpenLib(std::string const& func_name)
     }
 
     return dylib;
+}
+
+void PluginManager::CloseLibs()
+{
+    while (!handlers.empty())
+    {
+        dlclose(handlers.top());
+        handlers.pop();
+    }
+
+    binaryFunctions.clear();
+    unaryFunctions.clear();
 }
 
 void PluginManager::LoadUnaryFunc(std::string const& func_name)

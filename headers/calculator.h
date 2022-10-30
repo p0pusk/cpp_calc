@@ -17,7 +17,8 @@ class Calculator
 
     double EvalPostfix(std::vector<Token> expr);
 
-public:
+  public:
     Calculator();
+    ~Calculator();
     double Calculate(std::string input);
 };

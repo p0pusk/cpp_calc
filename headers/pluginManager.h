@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
 #include <stdexcept>
-#include <dlfcn.h>
 #include <stack>
 #include <map>
+#include <dlfcn.h>
 #include "operations.h"
 
 
@@ -25,6 +25,7 @@ class PluginManager
     std::function<double(double, double)> GetBinaryFunction(std::string const &func_name);
     bool ContainsBinary(std::string const &func_name);
     bool ContainsUnary(std::string const &func_name);
+    void CloseLibs();
 
   private:
     std::stack<void *> handlers;
