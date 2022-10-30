@@ -1,0 +1,7 @@
+
+add_library(sin MODULE sin.cpp)
+
+install(TARGETS sin
+    ARCHIVE DESTINATION .
+    LIBRARY DESTINATION .
+    RUNTIME DESTINATION .)
