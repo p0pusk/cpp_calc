@@ -6,8 +6,7 @@ Parser::Parser(std::map<std::string, Operation>& operations)
 Token::Token(Token&& token)
     : type_(std::move(token.type_)), name_(std::move(token.name_)) {}
 
-Token::Token(Token const& token)
-    : type_(token.type_), name_(token.name_) {}
+Token::Token(Token const& token) : type_(token.type_), name_(token.name_) {}
 
 Token::Token(Token::Type&& type, std::string&& name)
     : type_(std::move(type)), name_(std::move(name)) {}
@@ -30,8 +29,9 @@ std::vector<Token> Parser::InfixToPostfix(std::string& infix) {
 
     std::string sym = std::string(1, infix[i]);
 
-    if (isdigit(infix[i]))
+    if (isdigit(infix[i])) {
       output.emplace_back(std::move(GetOperand(infix, i)));
+    }
 
     else if (infix[i] == '(') {
       st.push(Token(Token::Bracket, "("));
@@ -54,7 +54,6 @@ std::vector<Token> Parser::InfixToPostfix(std::string& infix) {
         } else
           break;
       }
-
       st.push(Token(Token::Operation, sym));
     }
 
@@ -101,8 +100,8 @@ std::optional<Token> Parser::GetFunction(std::string const& str, int& index) {
     pm->LoadFunction(func_name);
     return Token(Token::Function, func_name);
   } catch (const std::exception& e) {
-      std::cerr << '\n' << e.what() << '\n';
-      return {};
+    std::cerr << '\n' << e.what() << '\n';
+    return {};
   }
 }
 
