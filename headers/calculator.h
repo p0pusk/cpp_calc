@@ -7,7 +7,7 @@
 
 #include "operations.h"
 #include "parser.h"
-#include "pluginManager.h"
+#include "plugin_manager.h"
 
 class Calculator {
  private:

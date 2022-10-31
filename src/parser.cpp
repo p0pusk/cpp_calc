@@ -19,7 +19,7 @@ bool Token::operator==(Token const& token) { return token.name_ == this->name_; 
 
 bool Token::operator==(std::string const& str) { return str == this->name_; }
 
-std::vector<Token> Parser::infixToPostfix(std::string& infix) {
+std::vector<Token> Parser::InfixToPostfix(std::string& infix) {
   infix = '(' + infix + ')';
   int l = infix.size();
   std::stack<Token> st;
@@ -93,23 +93,16 @@ std::optional<Token> Parser::GetFunction(std::string const& str, int& index) {
   }
   index--;
 
-  if (pm->ContainsBinary(func_name)) {
-    return Token(Token::BinaryFunction, func_name);
-  } else if (pm->ContainsUnary(func_name)) {
-    return Token(Token::UnaryFunction, func_name);
+  if (pm->ContainsFunction(func_name)) {
+    return Token(Token::Function, func_name);
   }
 
   try {
-    pm->LoadUnaryFunc(func_name);
-    return Token(Token::UnaryFunction, func_name);
+    pm->LoadFunction(func_name);
+    return Token(Token::Function, func_name);
   } catch (const std::exception& e) {
-    try {
-      pm->LoadBinaryFunction(func_name);
-      return Token(Token::BinaryFunction, func_name);
-    } catch (const std::exception& e) {
       std::cerr << '\n' << e.what() << '\n';
       return {};
-    }
   }
 }
 
@@ -122,8 +115,7 @@ int Parser::GetPriority(Token const& token) {
     return -1;
   }
 
-  else if (token.type_ == Token::BinaryFunction ||
-           token.type_ == Token::UnaryFunction)
+  else if (token.type_ == Token::Function)
     return 4;
   else
     return -1;

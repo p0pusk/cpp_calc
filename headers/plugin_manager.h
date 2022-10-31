@@ -11,24 +11,20 @@ class PluginManager {
  public:
   PluginManager(PluginManager const&) = delete;
   PluginManager& operator=(PluginManager const&) = delete;
-  void LoadUnaryFunc(std::string const& func_name);
-  void LoadBinaryFunction(std::string const& func_name);
+  void LoadFunction(std::string const& func_name);
 
   static std::shared_ptr<PluginManager> Instance() {
     static std::shared_ptr<PluginManager> instance{new PluginManager()};
     return instance;
   }
 
-  std::function<double(double)> GetUnaryFunction(std::string const& func_name);
-  std::function<double(double, double)> GetBinaryFunction( std::string const& func_name);
-  bool ContainsBinary(std::string const& func_name);
-  bool ContainsUnary(std::string const& func_name);
+  std::function<double(double)> GetFunction(std::string const& func_name);
+  bool ContainsFunction(std::string const& func_name);
   void CloseLibs();
 
  private:
   std::stack<void*> handlers_;
-  std::map<std::string, std::function<double(double, double)>> binary_functions_;
-  std::map<std::string, std::function<double(double)>> unary_functions_;
+  std::map<std::string, std::function<double(double)>> functions_;
 
   PluginManager(){};
   void* OpenLib(std::string const& func_name);

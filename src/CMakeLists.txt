@@ -5,7 +5,7 @@ set(
     main.cpp
     operations.cpp
     parser.cpp
-    pluginManager.cpp
+    plugin_manager.cpp
     calculator.cpp
     )
 
@@ -13,7 +13,7 @@ set(
     HEADERS
     ../headers/operations.h
     ../headers/parser.h
-    ../headers/pluginManager.h
+    ../headers/plugin_manager.h
     ../headers/calculator.h
     )
 

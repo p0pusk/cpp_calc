@@ -5,11 +5,11 @@
 #include <vector>
 
 #include "operations.h"
-#include "pluginManager.h"
+#include "plugin_manager.h"
 
 class Token {
  public:
-  enum Type { UnaryFunction, BinaryFunction, Operation, Operand, Bracket };
+  enum Type { Function, Operation, Operand, Bracket };
 
   const Token::Type type_;
   const std::string name_;
@@ -31,5 +31,5 @@ class Parser {
 
  public:
   Parser(std::map<std::string, Operation>& operations);
-  std::vector<Token> infixToPostfix(std::string& infix);
+  std::vector<Token> InfixToPostfix(std::string& infix);
 };

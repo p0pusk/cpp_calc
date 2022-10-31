@@ -19,7 +19,7 @@ Calculator::~Calculator() { pm_->CloseLibs(); }
 
 double Calculator::Calculate(std::string& input) {
   Parser p(operations_);
-  std::vector<Token> expr = p.infixToPostfix(input);
+  std::vector<Token> expr = p.InfixToPostfix(input);
   double result = EvalPostfix(expr);
   return result;
 }
@@ -38,21 +38,14 @@ double Calculator::EvalPostfix(std::vector<Token>& expr) {
 
       auto op = operations_.find(token.name_)->second;
       operands.emplace(op.function(y, x));
-    } else if (token.type_ == Token::Type::BinaryFunction) {
-      if (pm_->ContainsBinary(token.name_)) {
-        auto func = pm_->GetBinaryFunction(token.name_);
-        double x = operands.top();
-        operands.pop();
-        double y = operands.top();
-        operands.pop();
-        operands.emplace(func(x, y));
-      }
-    } else if (token.type_ == Token::Type::UnaryFunction) {
-      if (pm_->ContainsUnary(token.name_)) {
-        auto func = pm_->GetUnaryFunction(token.name_);
+    } else if (token.type_ == Token::Function) {
+      if (pm_->ContainsFunction(token.name_)) {
+        auto func = pm_->GetFunction(token.name_);
         double x = operands.top();
         operands.pop();
         operands.emplace(func(x));
+      } else {
+        throw std::runtime_error("No function with name " + token.name_);
       }
     }
   }
