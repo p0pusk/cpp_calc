@@ -1,10 +1,5 @@
 #include <cmath>
 
-
-extern "C"
-{
-    double Unary(double x)
-    {
-        return exp(x);
-    }
+extern "C" {
+double Unary(double x) { return exp(x); }
 }

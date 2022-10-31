@@ -1,24 +1,23 @@
 #pragma once
-#include <vector>
-#include <stack>
+#include <cmath>
 #include <iostream>
 #include <map>
-#include <cmath>
-#include "parser.h"
+#include <stack>
+#include <vector>
+
 #include "operations.h"
+#include "parser.h"
 #include "pluginManager.h"
 
+class Calculator {
+ private:
+  std::map<std::string, Operation> operations_;
+  std::shared_ptr<PluginManager> pm_;
 
-class Calculator
-{
-  private:
-    std::map<std::string, Operation> operations;
-    std::shared_ptr<PluginManager> pm;
+  double EvalPostfix(std::vector<Token>& expr);
 
-    double EvalPostfix(std::vector<Token> expr);
-
-  public:
-    Calculator();
-    ~Calculator();
-    double Calculate(std::string input);
+ public:
+  Calculator();
+  ~Calculator();
+  double Calculate(std::string& input);
 };
