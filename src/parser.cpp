@@ -6,7 +6,8 @@ Parser::Parser(std::map<std::string, Operation>& operations)
 Token::Token(Token&& token)
     : type_(std::move(token.type_)), name_(std::move(token.name_)) {}
 
-Token::Token(Token const& token) : type_(token.type_), name_(token.name_) {}
+Token::Token(Token const& token)
+    : type_(token.type_), name_(token.name_) {}
 
 Token::Token(Token::Type&& type, std::string&& name)
     : type_(std::move(type)), name_(std::move(name)) {}
@@ -79,12 +80,12 @@ Token Parser::GetOperand(std::string const& str, int& index) {
   while (isdigit(str[index])) operand += str[index++];
 
   index--;
-  return Token(Token::Type::Operand, operand);
+  return Token(Token::Operand, operand);
 }
 
 std::optional<Token> Parser::GetFunction(std::string const& str, int& index) {
-  std::shared_ptr<PluginManager> pluginManager;
-  pluginManager = pluginManager->Instance();
+  std::shared_ptr<PluginManager> pm;
+  pm = pm->Instance();
 
   std::string func_name;
   while (isalpha(str[index])) {
@@ -92,19 +93,19 @@ std::optional<Token> Parser::GetFunction(std::string const& str, int& index) {
   }
   index--;
 
-  if (pluginManager->ContainsBinary(func_name)) {
+  if (pm->ContainsBinary(func_name)) {
     return Token(Token::BinaryFunction, func_name);
-  } else if (pluginManager->ContainsUnary(func_name)) {
+  } else if (pm->ContainsUnary(func_name)) {
     return Token(Token::UnaryFunction, func_name);
   }
 
   try {
-    pluginManager->LoadUnaryFunc(func_name);
+    pm->LoadUnaryFunc(func_name);
     return Token(Token::UnaryFunction, func_name);
   } catch (const std::exception& e) {
     try {
-      pluginManager->LoadBinaryFunction(func_name);
-      return Token(Token::Type::BinaryFunction, func_name);
+      pm->LoadBinaryFunction(func_name);
+      return Token(Token::BinaryFunction, func_name);
     } catch (const std::exception& e) {
       std::cerr << '\n' << e.what() << '\n';
       return {};
