@@ -28,9 +28,9 @@ double Calculator::EvalPostfix(std::vector<Token>& expr) {
   std::stack<double> operands;
 
   for (auto& token : expr) {
-    if (token.type_ == Token::Type::Operand) {
+    if (token.type_ == Token::Operand) {
       operands.emplace(stod(token.name_));
-    } else if (token.type_ == Token::Type::Operation) {
+    } else if (token.type_ == Token::Operation) {
       double x = operands.top();
       operands.pop();
       double y = operands.top();
